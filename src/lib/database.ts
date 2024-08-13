@@ -5,7 +5,7 @@ import { type DiscordUser } from "../types/database";
 
 export default class Database {
     private api_key:           string;
-    private base_url: string;
+    private base_url:          string;
     private member_table_id:   string;
 
     /// Create a new Database instance

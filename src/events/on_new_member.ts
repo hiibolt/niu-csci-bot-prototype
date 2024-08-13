@@ -1,10 +1,13 @@
 import type { GuildMember } from "discord.js";
 import NIUCSCIBot from '../lib/bot';
-import { Err, Ok } from "../types/result";
+import { Ok, Result } from "../types/result";
 import { get_env_var } from "../lib/env";
 import { send_embed } from "../lib/discord";
 
-export const on_new_member = async (bot: NIUCSCIBot, member: GuildMember ) => {
+export const on_new_member = async (
+    bot: NIUCSCIBot,
+    member: GuildMember
+): Promise<Result> => {
     // Log the new member
     bot.print(`New member: ${member.user.username}`);
 
