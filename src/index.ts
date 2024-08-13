@@ -8,7 +8,8 @@ verify_env_vars([
     "DISCORD_ACCESS_TOKEN",
     "DB_API_KEY",
     "DB_BASE_URL",
-    "DB_MEMBERS_TABLE_ID"
+    "DB_MEMBERS_TABLE_ID",
+    "WELCOME_CHANNEL_ID"
 ]);
 
 // Create a new bot instance, and start it

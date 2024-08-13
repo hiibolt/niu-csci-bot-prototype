@@ -1,12 +1,13 @@
-import { GatewayIntentBits, Client, Events, Message } from "discord.js";
+import { GatewayIntentBits, Client, Events, Message, GuildMember, type TextBasedChannel, type Channel } from "discord.js";
 import on_message from "../events/on_message.ts";
 import on_ready from "../events/on_ready.ts";
 import Database from "./database.ts";
 import { get_env_var } from "./env.ts";
 import { send_embed, send_error_embed } from "./discord.ts";
 import type { DiscordUser } from "../types/database.ts";
-import { Ok } from "../types/result.ts";
+import { Err, Ok, Result } from "../types/result.ts";
 import { LevelUpThresholds } from "../types/database.ts";
+import { on_new_member } from "../events/on_new_member.ts";
 
 export default class NIUCSCIBot {
     private client:   Client;
@@ -18,6 +19,7 @@ export default class NIUCSCIBot {
         this.client = new Client({ 
             intents: [
               GatewayIntentBits.Guilds,
+              GatewayIntentBits.GuildMembers,
               GatewayIntentBits.GuildMessages,
               GatewayIntentBits.MessageContent,
             ],
@@ -38,6 +40,22 @@ export default class NIUCSCIBot {
     /* 
         * Discord functions
         */
+    /// Gets a channel by ID
+    ///
+    /// # Arguments
+    /// * `channel_id` - The ID of the channel to get
+    public async get_channel(
+        channel_id: string
+    ): Promise<Result> {
+        const channel: Channel | undefined = this.client.channels.cache.get(channel_id);
+
+        if (channel === undefined) {
+            return Err(`Failed to get channel with ID ${channel_id}! Does it exist?`);
+        }
+
+        return Ok(channel);
+    }
+
     /// Update the XP of a user
     ///
     /// # Arguments
@@ -117,6 +135,15 @@ export default class NIUCSCIBot {
                         "An error occurred!",
                         error
                     );
+                }
+            ));
+        });
+        this.client.on(Events.GuildMemberAdd, (member: GuildMember) => { 
+            on_new_member(this, member).then((result: any) => result.match(
+                (_: any) => this.print("Discord Bot is ready!"),
+                (error: any) => {
+                    this.error(error);
+                    process.exit(1);
                 }
             ));
         });
