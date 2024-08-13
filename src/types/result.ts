@@ -59,6 +59,7 @@ export class Result {
 
     /// Unwraps the result, returning the value,
     ///  or panicking with a custom message if the result
+    ///  is an error.
     public expect(reason: string): any {
         if (this.ok) {
             return this.value;
@@ -94,6 +95,18 @@ export class Result {
             return callback(this.value);
         } else {
             return this;
+        }
+    }
+
+    /// Only uses the callback if the result is an error.
+    ///
+    /// # Arguments
+    /// * `callback` - The function to call if the result is an error.
+    public or_else(callback: Function) {
+        if (this.ok) {
+            return this;
+        } else {
+            return callback(this.value);
         }
     }
 }
