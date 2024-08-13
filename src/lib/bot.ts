@@ -1,13 +1,13 @@
 import { GatewayIntentBits, Client, Events, Message, GuildMember, type TextBasedChannel, type Channel } from "discord.js";
 import on_message from "../events/on_message.ts";
 import on_ready from "../events/on_ready.ts";
+import on_new_member from "../events/on_new_member.ts";
 import Database from "./database.ts";
 import { get_env_var } from "./env.ts";
 import { send_embed, send_error_embed } from "./discord.ts";
 import type { DiscordUser } from "../types/database.ts";
 import { Err, Ok, Result } from "../types/result.ts";
 import { LevelUpThresholds } from "../types/database.ts";
-import { on_new_member } from "../events/on_new_member.ts";
 
 export default class NIUCSCIBot {
     private client:   Client;

@@ -4,7 +4,7 @@ import { Ok, Result } from "../types/result";
 import { get_env_var } from "../lib/env";
 import { send_embed } from "../lib/discord";
 
-export const on_new_member = async (
+const on_new_member = async (
     bot: NIUCSCIBot,
     member: GuildMember
 ): Promise<Result> => {
@@ -26,3 +26,5 @@ export const on_new_member = async (
 
     return Ok();
 };
+
+export default on_new_member;
